@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	
+	<settings>
+		<!--  mapUnderscoreToCamelCase 开启自动驼峰命名规则 (字段)f_Name ——> fName -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<!--        mybatis开启控制台打印sql日志-->
+		<setting name="logImpl" value="STDOUT_LOGGING" />
+		<!--        开启延迟加载-->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<!--        消极加载开启-->
+		<setting name="aggressiveLazyLoading" value="false"/>
+		<!--        二级缓存开启-->
+		<setting name="cacheEnabled" value="true"/>
+	</settings>
+	
+
+	<!--    扫描实体类的包默认别名为实体类首字母的小写-->
+<!--	<typeAliases>-->
+<!--		<package name="com.fqh.bean"/>-->
+<!--	</typeAliases>-->
+	
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor">
+		</plugin>
+	</plugins>
+
+</configuration>

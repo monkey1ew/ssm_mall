@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fqh.dao.OrdersMapper">
+
+    <insert id="addOrder">
+        insert into orders(<include refid="common"/>)
+            values (#{createUser},#{createPhone},
+                    #{createTime},#{orderNumber},
+                    #{orderStatus},#{goodsInfo},
+                   #{orderPrice},#{business},#{oAddress})
+    </insert>
+
+    <delete id="deleteOrder">
+        delete from orders where order_number = #{orderNumber}
+    </delete>
+
+    <select id="findOrderByNumber" resultType="orders">
+        select * from orders where order_number = #{oNumber}
+    </select>
+
+    <select id="findAllOrders" resultType="orders">
+        select * from orders
+            where
+                <if test="createUser != null">
+                    create_user = #{createUser} and
+                </if>
+                  1 = 1
+    </select>
+
+    <update id="updateOrder">
+        update orders set
+            <if test="phone != null">
+                create_phone = #{phone},
+            </if>
+            <if test="status != null">
+                order_status = #{status}
+            </if>
+            where order_number = #{number};
+    </update>
+
+    <sql id="common">
+        <if test="_parameter != null">
+            create_user,create_phone,create_time,order_number,order_status,goods_info,order_price,business,o_address
+        </if>
+    </sql>
+</mapper>

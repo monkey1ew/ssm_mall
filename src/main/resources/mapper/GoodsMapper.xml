@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fqh.dao.GoodsMapper">
+
+  <insert id="addGoods" parameterType="goods">
+    insert into goods (uid, goods_name, goods_type, goods_price, business)
+        values (#{uId}, #{goodsName}, #{goodsType}, #{goodsPrice}, #{business})
+  </insert>
+
+  <select id="findByType" resultType="goods">
+    select * from goods where goods_type = #{goodType}
+  </select>
+
+   <select id="getAllGoods" resultType="goods">
+       select * from goods
+   </select>
+
+    <select id="getGoodsPrice" resultType="double">
+        select goods_price from goods where goods_name = #{goodsName};
+    </select>
+
+
+<!--  foreach 添加多条记录-->
+  <insert id="addGoodsList">
+    insert into goods (<include refid="addCommon"/>)
+        values <foreach collection="goods" separator="," item="goods" open="(" close=")">
+        #{goods.uId}, #{goods.goodsName}, #{goods.goodsType}, #{goods.goodsPrice}, #{goods.business}
+    </foreach>
+  </insert>
+
+
+    <delete id="deleteGoods">
+        delete from goods where uid = #{uId};
+    </delete>
+
+    <update id="updateGoods">
+        update goods set
+            <if test="goodsName != null">
+                goods_name = #{goodsName},
+            </if>
+            <if test="goodsType != null">
+                goods_type = #{goodsType},
+            </if>
+            <if test="goodsPrice != null">
+                goods_price = #{goodsPrice},
+            </if>
+            <if test="business != null">
+                business = #{business}
+            </if>
+            <if test="goodsSold != null">
+                ,goods_sold = goods_sold + #{goodsSold}
+            </if>
+            where uid = #{uId} or business = #{business}
+
+    </update>
+
+    <select id="searchGoods" resultType="goods">
+        select * from goods where goods_name like concat('%',#{gName},'%')
+    </select>
+
+    <select id="getGoodsByName" resultType="goods">
+        select * from goods where goods_name = #{gName}
+    </select>
+
+<!--    public Goods getGoodsById(@Param("id") Integer id)-->
+    <select id="getGoodsById" resultType="goods">
+        select * from goods where id = #{id}
+    </select>
+
+<!--  sql片段-->
+  <sql id="addCommon">
+        <if test="_parameter != null">
+            uid, goods_name, goods_type, goods_price, business
+        </if>
+  </sql>
+
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fqh.dao.LogisticsMapper">
+
+    <resultMap id="LogisticsAndGoodsResultMap" type="logistics">
+        <id column="id" property="id"/>
+        <result column="l_number" property="lNumber"/>
+        <result column="l_company" property="lCompany"/>
+        <result column="l_goods" property="lGoods"/>
+        <result column="l_status" property="lStatus"/>
+        <result column="l_address" property="lAddress"/>
+        <result column="l_receiver" property="lReceiver"/>
+        <association property="goods"
+                     select="com.fqh.dao.GoodsMapper.getGoodsByName"
+                     column="l_goods" fetchType="eager">
+        </association>
+    </resultMap>
+    
+    <select id="getLogisticsByReceiver" resultMap="LogisticsAndGoodsResultMap">
+        select * from logistics
+            where l_receiver = #{receiver} and
+                <if test="status != null">
+                    l_status = #{status} and
+                </if>
+            1 = 1
+    </select>
+
+    <update id="updateLogistics">
+        update logistics set l_status = #{status}
+            where l_number = #{number}
+    </update>
+
+    <insert id="addLogistics">
+        insert into logistics(<include refid="common"/>)
+            values (#{lNumber},#{lCompany},#{lGoods},#{lStatus},#{lAddress},#{lReceiver})
+    </insert>
+
+
+<!--    public List<Logistics> getAllLogistics()-->
+    <select id="getAllLogistics" resultType="logistics">
+        select * from logistics
+    </select>
+
+    <sql id="common">
+        <if test="_parameter != null">
+            l_number,l_company,l_goods,l_status,l_address,l_receiver
+        </if>
+    </sql>
+</mapper>

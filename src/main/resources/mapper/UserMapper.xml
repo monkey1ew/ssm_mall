@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fqh.dao.UserMapper">
+
+  <insert id="insert" parameterType="user">
+    insert into tb_user (username, password,
+      email, address, phone
+      )
+    values (#{username},#{password},#{email},#{address},#{phone})
+  </insert>
+
+  <select id="findAll" resultType="user">
+    select * from tb_user
+  </select>
+
+  <select id="checkUser" resultType="user">
+    select * from tb_user where username = #{username};
+  </select>
+
+<!--  <resultMap id="uo" type="com.fqh.bean.User">-->
+<!--    <id column="id" property="id"/>-->
+<!--    <result column="username" property="username"/>-->
+
+<!--    <collection property="ordersList" ofType="com.fqh.bean.Orders">-->
+<!--      <id column="id" property="id"/>-->
+<!--      <result column="create_user" property="createUser"/>-->
+<!--      <result column="create_phone" property="createPhone"/>-->
+<!--      <result column="create_time" property="createTime"/>-->
+<!--      <result column="order_number" property="orderNumber"/>-->
+<!--      <result column="order_status" property="orderStatus"/>-->
+<!--      <result column="goods_info" property="goodsInfo"/>-->
+<!--      <result column="order_price" property="orderPrice"/>-->
+<!--    </collection>-->
+<!--  </resultMap>-->
+
+  <select id="getUserAndOrders" resultType="orders">
+    select orders.id, create_user, create_phone, create_time,
+           order_number, order_status, goods_info, order_price
+    from tb_user
+        left join orders on tb_user.email = orders.create_user
+            where tb_user.username = #{username}
+  </select>
+
+  <select id="getUserByName" resultType="user">
+    select * from tb_user where username = #{username};
+  </select>
+
+  <select id="getUserAccount" resultType="double">
+    select account from tb_user where username = #{name};
+  </select>
+
+  <update id="debitAccount">
+    update tb_user set account = account - #{money}
+        where username = #{name}
+  </update>
+
+</mapper>

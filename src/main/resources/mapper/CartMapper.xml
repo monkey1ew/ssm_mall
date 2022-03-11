@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fqh.dao.CartMapper">
+
+    <insert id="addItem">
+        insert into cart(<include refid="common"/>)
+            values (#{cartName},#{goodsName},#{business},#{totalPrice},#{goodsNmb})
+    </insert>
+
+    <update id="updateItem">
+        update cart set total_price = #{tPrice},goods_nmb = #{gNmb} where goods_name = #{gName}
+    </update>
+
+    <delete id="deleteItem">
+        delete from cart
+            <trim prefix="where" suffixOverrides="and">
+                <if test="gName != null">
+                    goods_name = #{gName} and
+                </if>
+                <if test="id != null">
+                    id = #{id} and
+                </if>
+                <if test="cName != null">
+                    cart_name = #{cName} and
+                </if>
+            </trim>
+    </delete>
+
+    <resultMap id="CartAndGoodsResultMap" type="cart">
+        <id property="id" column="id"/>
+        <result property="cartName" column="cart_name"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="goodsNmb" column="goods_nmb"/>
+        <result property="business" column="business"/>
+<!--        分布查询消极加载-->
+        <association property="goods"
+                     select="com.fqh.dao.GoodsMapper.getGoodsByName"
+                     column="goods_name" fetchType="eager">
+        </association>
+    </resultMap>
+    <select id="getCart" resultMap="CartAndGoodsResultMap">
+        select * from cart
+                where
+                    <if test="cName != null">
+                        cart_name = #{cName} and
+                    </if>
+                1 = 1
+    </select>
+
+    <select id="getItem" resultType="cart">
+        select * from cart
+            <trim prefix="where" suffixOverrides="and">
+                <if test="cName != null">
+                    cart_name = #{cName} and
+                </if>
+                <if test="id != null">
+                    id = #{id} and
+                </if>
+                <if test="gName != null">
+                    goods_name = #{gName} and
+                </if>
+            </trim>
+    </select>
+
+<!--    public int getCartCount(@Param("cName") String cartName)-->
+    <select id="getCartCount" resultType="int">
+        select count(*) from cart where cart_name = #{cName}
+    </select>
+
+    <sql id="common">
+        <if test="_parameter != null">
+            cart_name,goods_name,business,total_price,goods_nmb
+        </if>
+    </sql>
+</mapper>
