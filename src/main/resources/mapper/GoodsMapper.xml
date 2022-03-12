@@ -50,8 +50,10 @@
             <if test="goodsSold != null">
                 ,goods_sold = goods_sold + #{goodsSold}
             </if>
+            <if test="description != null">
+                ,goods_desciption = #{description}
+            </if>
             where uid = #{uId} or business = #{business}
-
     </update>
 
     <select id="searchGoods" resultType="goods">
