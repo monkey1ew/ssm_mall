@@ -122,6 +122,7 @@ public class GoodsController {
                                 Model model, HttpSession session) {
         Goods goods = goodsService.getGoodsById(id);
         model.addAttribute("goodsInfo", goods);
+        System.out.println("商品信息: " + goods);
         int count = cartService.getCartCount(session.getAttribute("username") + "@qq.com");
         System.out.println(count);
         session.setAttribute("cartNums", count);

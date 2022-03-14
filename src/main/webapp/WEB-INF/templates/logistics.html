@@ -33,8 +33,47 @@
 </head>
 
 <body>
+<!-- Modal模态框 -->
+<div class="modal fade"  id="commentAndModal" aria-labelledby="myModallabel" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title" id="myModallabel">评论信息</h5>
+            </div>
+            <form id="formData" class="form-horizontal" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label col-lg-2">内容:</label>
+                        <div class="col-lg-9">
+                            <label>
+                                <input type="text" name="goodsName" placeholder="内容" class="form-control" id="comment" maxlength=100/>
+                            </label><br>
+                        </div>
+                    </div>
 
-
+                    <div class="form-group">
+                        <label class="control-label col-lg-2">评价星级:</label>
+                        <div class="col-lg-9">
+                            <select class="form-select" aria-label="Default select example" id="star">
+                                <option selected>给个好评吧!</option>
+                                <option value="1星">1星</option>
+                                <option value="2星">2星</option>
+                                <option value="3星">3星</option>
+                                <option value="4星">4星</option>
+                                <option value="5星">5星</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" type="button" data-dismiss="modal">close</button>
+                    <button class="btn btn-success" type="button" onclick="submitComment()">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="container">
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -93,6 +132,7 @@
                     <th>物流状态</th>
                     <th>收获地址</th>
                     <th>收货人</th>
+                    <th>立即评价</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -102,7 +142,7 @@
                     </td>
                     <td th:text="${logistics.lNumber}"></td>
                     <td th:text="${logistics.lCompany}"></td>
-                    <td th:text="${logistics.lGoods}"></td>
+                    <td th:text="${logistics.lGoods}" id="gName"></td>
                     <td th:switch="${logistics.lStatus}">
                         <p th:case="'DELIVERED'">待发货</p>
                         <p th:case="'TRANSIT'">运输中</p>
@@ -112,6 +152,9 @@
                     </td>
                     <td th:text="${logistics.lAddress}"></td>
                     <td th:text="${logistics.lReceiver}"></td>
+                    <td>
+                        <button class="btn btn-success" data-target="#commentAndModal" data-toggle="modal" onclick="loadVal(this)">评价</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -150,4 +193,42 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.30/assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
+
+<script type="text/javascript">
+    var gName = "";
+
+    function submitComment() {
+        var comment = $("#comment").val();
+        var star = $("#star").val();
+
+        var Comment = {
+            comment : comment,
+            star : star
+        }
+
+        $.ajax({
+            url: "/",
+            type: "POST",
+            dataType: "json",
+            data: JSON.stringify(Comment),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if(result.code == 100) {
+                    alert(result.message);
+                    // 清空模态框
+                    $('#updateModal').on('hidden.bs.modal', function() {
+                        document.getElementById("Data").reset();
+                    })
+                    location.reload();
+                }else if (result.code == 200) {
+                    alert(result.message);
+                }
+            }
+        });
+    }
+
+    function loadVal(val) {
+        gName = $(val).parent().parent().find("td").eq(3).text();
+    }
+</script>
 </html>

@@ -3,8 +3,8 @@
 <mapper namespace="com.fqh.dao.GoodsMapper">
 
   <insert id="addGoods" parameterType="goods">
-    insert into goods (uid, goods_name, goods_type, goods_price, business)
-        values (#{uId}, #{goodsName}, #{goodsType}, #{goodsPrice}, #{business})
+    insert into goods (uid, goods_name, goods_type, goods_price, business, goods_description)
+        values (#{uId}, #{goodsName}, #{goodsType}, #{goodsPrice}, #{business}, #{description})
   </insert>
 
   <select id="findByType" resultType="goods">
@@ -24,7 +24,7 @@
   <insert id="addGoodsList">
     insert into goods (<include refid="addCommon"/>)
         values <foreach collection="goods" separator="," item="goods" open="(" close=")">
-        #{goods.uId}, #{goods.goodsName}, #{goods.goodsType}, #{goods.goodsPrice}, #{goods.business}
+        #{goods.uId}, #{goods.goodsName}, #{goods.goodsType}, #{goods.goodsPrice}, #{goods.business},#{goods.description}
     </foreach>
   </insert>
 
@@ -51,7 +51,7 @@
                 ,goods_sold = goods_sold + #{goodsSold}
             </if>
             <if test="description != null">
-                ,goods_desciption = #{description}
+                ,goods_description = #{description}
             </if>
             where uid = #{uId} or business = #{business}
     </update>
@@ -65,14 +65,25 @@
     </select>
 
 <!--    public Goods getGoodsById(@Param("id") Integer id)-->
-    <select id="getGoodsById" resultType="goods">
+    <resultMap id="goodsIdMap" type="goods">
+        <id column="id" property="id"/>
+        <result column="uid" property="uId"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="goods_type" property="goodsType"/>
+        <result column="goods_price" property="goodsPrice"/>
+        <result column="business" property="business"/>
+        <result column="goods_sold" property="goodsSold"/>
+        <result column="goods_img" property="goodsImg"/>
+        <result column="goods_description" property="description"/>
+    </resultMap>
+    <select id="getGoodsById" resultMap="goodsIdMap">
         select * from goods where id = #{id}
     </select>
 
 <!--  sql片段-->
   <sql id="addCommon">
         <if test="_parameter != null">
-            uid, goods_name, goods_type, goods_price, business
+            uid, goods_name, goods_type, goods_price, business, goods_description
         </if>
   </sql>
 

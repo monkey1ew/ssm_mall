@@ -157,6 +157,45 @@ public class OrderController {
         model.addAttribute("pageInfo", pageInfo);
 
         return "order";
+    }
 
+    @PostMapping(value = "/payInfo")
+    @ResponseBody
+    public Result getPayInfo(@RequestBody Map<String, Object> map,
+                             HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        String address = "";
+        String gName = (String) map.get("gName");
+        Goods goods = goodsService.getGoodsByName(gName);
+
+        User user = userService.getUserByName(username);
+        if (map.get("address") == null) {
+            address = user.getAddress();
+        }else {
+            address = (String) map.get("address");
+        }
+
+        Orders orders = new Orders();
+        orders.setCreateUser(username + "@qq.com");
+        orders.setCreatePhone((String) map.get("phone"));
+        orders.setCreateTime(DateUtils.formatDate());
+        orders.setOrderNumber(ParamUtils.createUid());
+        orders.setOrderStatus(OrderStatus.COMPLETED.name());
+        orders.setOrderPrice(Double.parseDouble((String) map.get("gTotalPrice")));
+        orders.setGoodsInfo(gName);
+        orders.setBusiness(goods.getBusiness());
+        orders.setoAddress(address);
+        ordersService.addOrder(orders);
+
+        Logistics logistics = new Logistics();
+        logistics.setlNumber(ParamUtils.createUid());
+        logistics.setlCompany("邮政快递");
+        logistics.setlGoods(gName);
+        logistics.setlStatus(LogisticsStatus.DELIVERED.name());
+        logistics.setlAddress(address);
+        logistics.setlReceiver(username);
+        logisticsService.addLogistics(logistics);
+
+        return Result.success();
     }
 }

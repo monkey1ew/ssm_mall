@@ -93,12 +93,4 @@ public class TestMapper {
         }
     }
 
-
-    @Test
-    public void testGoods02() {
-        List<Goods> goods = goodsMapper.getAllGoods();
-        for (Goods goods1 : goods) {
-
-        }
-    }
 }
