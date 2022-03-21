@@ -37,4 +37,9 @@ public class LogisticsServiceImpl implements LogisticsService {
     public List<Logistics> getAllLogistics() {
         return logisticsMapper.getAllLogistics();
     }
+
+    @Override
+    public int delLogistics(String lNumber) {
+        return logisticsMapper.delLogistics(lNumber);
+    }
 }

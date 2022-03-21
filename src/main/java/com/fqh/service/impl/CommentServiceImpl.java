@@ -6,6 +6,8 @@ import com.fqh.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author 海盗狗
  * @version 1.0
@@ -19,5 +21,15 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public int insertComment(Comment comment) {
         return commentMapper.insertComment(comment);
+    }
+
+    @Override
+    public List<Comment> getCommentsByGoodsName(String goodsName) {
+        return commentMapper.getCommentsByGoodsName(goodsName);
+    }
+
+    @Override
+    public int incrLike(String goodsName, String commentator, String commentTime) {
+        return commentMapper.incrLike(goodsName, commentator, commentTime);
     }
 }

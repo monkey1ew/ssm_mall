@@ -1,9 +1,11 @@
 package com.fqh.controller;
 
 import com.fqh.bean.Cart;
+import com.fqh.bean.Comment;
 import com.fqh.bean.Goods;
 import com.fqh.enum_.GoodsType;
 import com.fqh.service.CartService;
+import com.fqh.service.CommentService;
 import com.fqh.service.GoodsService;
 import com.fqh.service.UserService;
 import com.fqh.utils.ParamUtils;
@@ -38,6 +40,9 @@ public class GoodsController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private CommentService commentService;
 
 //    查询商品数据 (分页)
     @RequestMapping(value = "/goods/{sort}", method = RequestMethod.GET)
@@ -126,6 +131,10 @@ public class GoodsController {
         int count = cartService.getCartCount(session.getAttribute("username") + "@qq.com");
         System.out.println(count);
         session.setAttribute("cartNums", count);
+//        获取该商品的品论
+        List<Comment> commentList = commentService.getCommentsByGoodsName(goods.getGoodsName());
+        session.setAttribute("comments", commentList);
+
         return "goodsinfo";
     }
 }

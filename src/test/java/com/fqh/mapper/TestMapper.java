@@ -1,13 +1,7 @@
 package com.fqh.mapper;
 
-import com.fqh.bean.Cart;
-import com.fqh.bean.Goods;
-import com.fqh.bean.Orders;
-import com.fqh.bean.User;
-import com.fqh.dao.CartMapper;
-import com.fqh.dao.GoodsMapper;
-import com.fqh.dao.OrdersMapper;
-import com.fqh.dao.UserMapper;
+import com.fqh.bean.*;
+import com.fqh.dao.*;
 import com.fqh.enum_.GoodsType;
 import com.fqh.enum_.OrderStatus;
 import com.fqh.utils.DateUtils;
@@ -40,6 +34,9 @@ public class TestMapper {
 
     @Autowired
     private CartMapper cartMapper;
+
+    @Autowired
+    private CommentMapper commentMapper;
 
     @Test
     public void testUser() {
@@ -91,6 +88,18 @@ public class TestMapper {
             cart.setGoodsNmb(1);
             cartMapper.addItem(cart);
         }
+    }
+
+    @Test
+    public void testComment() {
+        Comment comment = new Comment();
+        comment.setUserName("jack");
+        comment.setGoodsName("java核心技术卷1");
+        comment.setContent("这是一本好书, 值得入手");
+        comment.setStars("5星");
+
+
+        commentMapper.insertComment(comment);
     }
 
 }

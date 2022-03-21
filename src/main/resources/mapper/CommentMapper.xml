@@ -5,7 +5,27 @@
 
 <!--    public int insertComment(Comment comment)-->
     <insert id="insertComment">
-        insert into tb_content (user_name, content, content_time, starts, likes_number)
-            values (#{comment.userName}, #{comment.content}, #{comment.contentTime}, #{comment.stars}, #{comment.likesNumber})
+        insert into tb_content (user_name, goods_name, content, content_time, starts)
+            values (#{comment.userName}, #{comment.goodsName}, #{comment.content}, #{comment.contentTime}, #{comment.stars})
     </insert>
+
+<!--    public List<Comment> getCommentsByGoodsName(@Param("gName") String goodsName)-->
+    <resultMap id="CommentByGoodsNameMap" type="comment">
+        <id column="id" property="id"/>
+        <result column="user_name" property="userName"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="content" property="content"/>
+        <result column="content_time" property="contentTime"/>
+        <result column="starts" property="stars"/>
+        <result column="likes_number" property="likesNumber"/>
+    </resultMap>
+    <select id="getCommentsByGoodsName" resultMap="CommentByGoodsNameMap">
+        select * from tb_content where goods_name = #{gName}
+    </select>
+
+<!--public int incrLike(@Param("gName")String goodsName, @Param("userName") String commentator, @Param("commentTime")String commentTime);-->
+    <update id="incrLike">
+        update tb_content set likes_number  = likes_number + 1
+            where goods_name = #{gName} and user_name = #{userName} and content_time = #{commentTime}
+    </update>
 </mapper>

@@ -5,8 +5,15 @@
     <title>海盗商品详情页</title>
     <link rel="stylesheet" th:href="@{/static/css/main.css}">
     <link rel="stylesheet" th:href="@{/static/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/static/css/comment.css}">
+<!--    layui(css)-->
+    <link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" media="all">
+
     <script type="text/javascript" th:src="@{/static/js/jquery.min.js}"></script>
     <script th:src="@{/static/js/bootstrap.min.js}"></script>
+
+    <script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
+
     <style>
         *{
             padding: 0;
@@ -98,39 +105,13 @@
 <body>
 <!--模态框-->
 <div class="container">
-<!--    <div>-->
-<!--        <button class="toggleModal" id="toggleModal">触发遮罩层</button>-->
-<!--    </div>-->
     <div class="modal">
         <div class="modal-header">
             <p class="title">填写购买信息</p>
             <p class="close">×</p>
         </div>
-<!--        <div class="modal-content">-->
-<!--            <form class="" id="payInfo" th:action="@{/payInfo}" method="post">-->
-
-<!--            </form>-->
-<!--        </div>-->
-
         <form id="formData" class="form-horizontal" method="post">
             <div class="modal-body">
-<!--                <div class="form-group">-->
-<!--                    <label class="control-label col-lg-2">商品名称:</label>-->
-<!--                    <div class="col-lg-9">-->
-<!--                        <label>-->
-<!--                            <input type="text" name="goodsName" placeholder="商品名称" class="form-control" id="gName" readonly/>-->
-<!--                        </label><br>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="form-group">-->
-<!--                    <label class="control-label col-lg-2">商品总价:</label>-->
-<!--                    <div class="col-lg-9">-->
-<!--                        <label>-->
-<!--                            <input type="text" placeholder="商品总价" name="goodsTotalPrice" class="form-control" id="gPrice" readonly>-->
-<!--                        </label>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <div class="form-group">
                     <label class="control-label col-lg-2">地址:</label>
                     <div class="col-lg-9">
@@ -189,18 +170,20 @@
     </div>
 </div>
 <!-- 商品信息栏 -->
-<div class="navbar_con">
-    <div class="navbar clearfix">
-        <div class="subnav_con fl">
-            <h1>全部商品分类 <i></i></h1>
-        </div>
-        <ul class="navlist fl">
-            <li><a th:href="@{/home}">首页</a></li>
-            <li><a href="">手机生鲜</a></li>
-            <li><a href="">抽奖</a></li>
-        </ul>
-    </div>
-</div>
+<ul class="layui-nav" lay-filter="">
+    <li class="layui-nav-item"><a href="">最新活动</a></li>
+    <li class="layui-nav-item layui-this"><a href="">评论</a></li>
+    <li class="layui-nav-item"><a href="">商家</a></li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">选择列表</a>
+        <dl class="layui-nav-child"> <!-- 二级菜单 -->
+            <dd><a href="">移动模块</a></dd>
+            <dd><a href="">后台模版</a></dd>
+            <dd><a href="">电商平台</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item"><a href="">社区</a></li>
+</ul>
 <div class="submena clearfix">
     <a href=" ">全部分类</a>
     <span>></span>
@@ -219,6 +202,7 @@
             <div class="show_prize fl">￥<em th:text="${goodsInfo.goodsPrice}" id="single_price"></em></div>
             <div class="show_unit fl">单位：500g</div>
         </div>
+
         <div class="goods_num clearfix">
             <div class="num_name fl">数量：</div>
             <div class="num_add fl">
@@ -228,18 +212,94 @@
 <!--                <a type="button" class="minus fr" onclick="reduce()">-</a>-->
             </div>
         </div>
+
         <div class="total">总价：
             <em th:text="${goodsInfo.goodsPrice}" id="total_price">
             </em> 元
         </div>
         <div class="operate_btn">
-            <button class="toggleModal" id="toggleModal" onclick="loadVal()">立即购买</button>
-            <button class="add_cart" onclick="addToCart()">加入购物车</button>
+            <button class="layui-btn layui-btn-normal" id="toggleModal" onclick="loadVal()" th:text="立即购买"></button>
+            <button class="layui-btn layui-btn-warm" onclick="addToCart()">加入购物车</button>
         </div>
     </div>
 </div>
+<ul class="layui-nav" lay-filter="">
+    <li class="layui-nav-item"><a href="">最新活动</a></li>
+    <li class="layui-nav-item layui-this"><a href="">评论</a></li>
+    <li class="layui-nav-item"><a href="">商家</a></li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">选择列表</a>
+        <dl class="layui-nav-child"> <!-- 二级菜单 -->
+            <dd><a href="">移动模块</a></dd>
+            <dd><a href="">后台模版</a></dd>
+            <dd><a href="">电商平台</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item"><a href="">社区</a></li>
+</ul>
+<!--评论列表-->
+<div class="comments">
+    <tr th:each="comment:${session.comments}">
+        <td>
+            <div class="comment-wrap">
+                <div class="photo">
+                    <div class="avatar" style="background-image: url('/static/img/bootstrap-solid.svg')"></div>
+                </div>
+                <div class="comment-block">
+                    <!--            评论内容-->
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;"></fieldset>
+                    <div id="test2" th:text="${comment.stars}"></div>
+                    <ul class="comment-text">
+                        <li class="complain" th:text="${comment.userName}" id="commentator"></li>
+                    </ul>
+                    <p class="comment-text" th:text="${comment.content}"></p>
+                    <div class="bottom-comment">
+                        <div class="comment-date" th:text="${comment.contentTime}" id="commentTime"></div>
+                        <ul class="comment-actions">
+                            <li class="complain">
+                                <button class="layui-btn layui-btn-normal small" onclick="like(this)">
+                                    点赞
+                                </button>
+                            </li>
+<!--                            <li class="reply">回复</li>-->
+                            <li class="complain" th:text="'点赞数:'+${comment.likesNumber}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</div>
+
 <div style="height:300px;overflow-y:auto"></div>
 </body>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+</script>
+
+<script>
+    var stars = $("#test2").text().charAt(0);
+
+    layui.use(['rate'], function() {
+
+        console.log("打印星")
+        console.log('test' + 1)
+        var rate = layui.rate;
+        //显示文字
+        rate.render({
+            elem: '#test2'
+            , value: stars //初始值
+            , text: true //开启文本
+        });
+    });
+
+</script>
+
 
 <script type="text/javascript">
     window.onload = function(){
@@ -336,6 +396,34 @@
             type: "POST",
             dataType: "json",
             data: JSON.stringify(payInfo),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result.code == 100) {
+                    alert(result.message);
+                    location.reload();
+                } else if (result.code == 200) {
+                    alert(result.message);
+                }
+            }
+        });
+    }
+    //点赞
+    function like(val) {
+        var goodsName = $("#goods_name").text();
+        var commentator = $(val).parent().parent().parent().parent().find("#commentator").text(); // 该条评论人
+        var commentTime = $(val).parent().parent().parent().parent().find("#commentTime").text(); //评论时间
+
+        likeInfo = {
+            goodsName : goodsName,
+            commentator : commentator,
+            commentTime : commentTime
+        };
+
+        $.ajax({
+            url: "/comment/like",
+            type: "POST",
+            dataType: "json",
+            data: JSON.stringify(likeInfo),
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result.code == 100) {

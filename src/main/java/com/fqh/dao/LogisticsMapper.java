@@ -10,7 +10,6 @@ import java.util.List;
  */
 public interface LogisticsMapper {
 
-
     public List<Logistics> getLogisticsByReceiver(@Param("receiver") String receiverName, @Param("status")String lStatus);
 
     public int updateLogistics(@Param("number") String lNumber, @Param("status")String lStatus);
@@ -18,5 +17,7 @@ public interface LogisticsMapper {
     public int addLogistics(Logistics logistics);
 
     public List<Logistics> getAllLogistics();
+
+    public int delLogistics(@Param("number") String lNumber);
 
 }

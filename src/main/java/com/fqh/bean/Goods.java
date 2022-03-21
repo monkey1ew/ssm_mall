@@ -1,6 +1,8 @@
 package com.fqh.bean;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author 海盗狗
@@ -16,7 +18,7 @@ public class Goods implements Serializable {
     private Integer goodsSold; //已售出
     private String goodsImg;
     private String description;
-
+    private List<Comment> commentList;
 
     public Goods() {
     }
@@ -109,6 +111,14 @@ public class Goods implements Serializable {
         this.description = description;
     }
 
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
     @Override
     public String toString() {
         return "Goods{" +
@@ -121,6 +131,7 @@ public class Goods implements Serializable {
                 ", goodsSold=" + goodsSold +
                 ", goodsImg='" + goodsImg + '\'' +
                 ", description='" + description + '\'' +
+                ", commentList=" + commentList +
                 '}';
     }
 }

@@ -19,4 +19,6 @@ public interface LogisticsService {
     public int addLogistics(Logistics logistics);
 
     public List<Logistics> getAllLogistics();
+
+    public int delLogistics(@Param("number") String lNumber);
 }

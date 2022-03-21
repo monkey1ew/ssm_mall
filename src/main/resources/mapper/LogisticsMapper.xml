@@ -35,6 +35,11 @@
             values (#{lNumber},#{lCompany},#{lGoods},#{lStatus},#{lAddress},#{lReceiver})
     </insert>
 
+<!--    public int delLogistics(@Param("number") String lNumber)-->
+    <delete id="delLogistics">
+        delete from logistics where l_number = #{number}
+    </delete>
+
 
 <!--    public List<Logistics> getAllLogistics()-->
     <select id="getAllLogistics" resultType="logistics">
