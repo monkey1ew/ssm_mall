@@ -41,6 +41,12 @@
         <session-timeout>3600</session-timeout>
     </session-config>
 
+<!--    错误页面-->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/error/error.html</location>
+    </error-page>
+
     <!--    启动spring的容器-->
     <!--   2. 注册前端控制器-->
     <servlet>

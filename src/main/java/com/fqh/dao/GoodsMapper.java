@@ -32,4 +32,7 @@ public interface GoodsMapper {
 
     public Goods getGoodsById(@Param("id") Integer id);
 
+    public List<Goods> getGoodsByType(@Param("type") String type);
+
+
 }

@@ -5,7 +5,6 @@ import com.fqh.service.CommentService;
 import com.fqh.service.LogisticsService;
 import com.fqh.utils.DateUtils;
 import com.fqh.utils.Result;
-import org.apache.ibatis.annotations.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.lang.ref.PhantomReference;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

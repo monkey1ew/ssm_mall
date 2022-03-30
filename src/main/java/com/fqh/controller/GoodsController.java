@@ -12,18 +12,17 @@ import com.fqh.utils.ParamUtils;
 import com.fqh.utils.Result;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 海盗狗
@@ -60,6 +59,8 @@ public class GoodsController {
         }else if (sort.equals("sell")) {
             Collections.sort(goodsList, ((o1, o2) -> (int) (o2.getGoodsSold() - o1.getGoodsSold())));
         }
+        Map<String, String> map = new HashMap<>();
+
 //        使用pageInfo 包装查询后的结果
 //        navigatePage:连续显示的额页数
         PageInfo<Goods> pageInfo = new PageInfo<>(goodsList, 5);
@@ -127,14 +128,23 @@ public class GoodsController {
                                 Model model, HttpSession session) {
         Goods goods = goodsService.getGoodsById(id);
         model.addAttribute("goodsInfo", goods);
-        System.out.println("商品信息: " + goods);
-        int count = cartService.getCartCount(session.getAttribute("username") + "@qq.com");
-        System.out.println(count);
+        String username = (String) session.getAttribute("username");
+        int count = cartService.getCartCount( username + "@qq.com");
         session.setAttribute("cartNums", count);
 //        获取该商品的品论
         List<Comment> commentList = commentService.getCommentsByGoodsName(goods.getGoodsName());
         session.setAttribute("comments", commentList);
-
         return "goodsinfo";
     }
+
+//    商品分类检索(test)
+    @GetMapping(value = "/goods/type/{type}")
+    public String searchOfType(@PathVariable("type") String type,
+                               Model model) {
+        List<Goods> goodsList = goodsService.getGoodsByType(type.toUpperCase());
+        PageInfo<Goods> pageInfo = new PageInfo<>(goodsList, 5);
+        model.addAttribute("pageInfo", pageInfo);
+        return "home";
+    }
+
 }

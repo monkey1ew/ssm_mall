@@ -15,6 +15,7 @@
     <!-- Bootstrap core CSS -->
     <link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet">
 
+    <link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" media="all">
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.30/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
@@ -44,6 +45,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#" th:text="'你好 '+${session.username}"></a>
+            <img th:src="${session.userImgPath}" class="img-circle" alt="..." height="12%" width="12%"/>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -86,28 +88,28 @@
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <ul class="layui-nav layui-bg-blue" lay-bar="disabled">
+                <li class="layui-nav-item"><a th:href="@{/goods/type/phone}">手机</a></li>
+                <li class="layui-nav-item"><a th:href="@{/goods/type/book}">书籍</a></li>
+                <li class="layui-nav-item"><a th:href="@{/goods/type/clothes}">服饰</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">食物</a>
+                    <dl class="layui-nav-child">
+                        <dd><a th:href="@{/goods/type/food}">熟食</a></dd>
+                        <dd><a th:href="@{/goods/type/food}">生食</a></dd>
+                        <dd><a th:href="@{/goods/type/food}">零食</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">综合排序</a>
+                    <dl class="layui-nav-child">
+                        <dd><a th:href="@{/goods/desc}">价格升序</a></dd>
+                        <dd><a th:href="@{/goods/esc}">价格降序</a></dd>
+                        <dd><a th:href="@{/goods/sell}">销量优先</a></dd>
+                    </dl>
+                </li>
+            </ul>
 
-            <!-- 排序 button -->
-            <div class="btn-group">
-                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    综合排序 <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a th:href="@{/goods/desc}">价格升序</a></li>
-                    <li><a th:href="@{/goods/esc}">价格降序</a></li>
-                    <li><a th:href="@{/goods/sell}">销量优先</a> </li>
-                </ul>
-<!--                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                    按价格排序 <span class="caret"></span>-->
-<!--                </button>-->
-<!--                <ul class="dropdown-menu">-->
-<!--                    <li><a href="#">升序</a></li>-->
-<!--                    <li><a href="#">降序</a></li>-->
-<!--                </ul>-->
-            </div>
-<!--            -->
-
-<!--            <h2 class="sub-header">Section title</h2>-->
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -208,7 +210,7 @@
         </div>
     </div>
 </div>
-
+</body>
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
@@ -219,8 +221,7 @@
 <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.30/assets/js/vendor/holder.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.30/assets/js/ie10-viewport-bug-workaround.js"></script>
-</body>
-
+<script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
 <script type="text/javascript">
     function addCart(val) {
 

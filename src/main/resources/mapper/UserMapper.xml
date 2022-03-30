@@ -4,16 +4,27 @@
 
   <insert id="insert" parameterType="user">
     insert into tb_user (username, password,
-      email, address, phone
+      email, address, phone, picture_path
       )
-    values (#{username},#{password},#{email},#{address},#{phone})
+    values (#{username},#{password},#{email},#{address},#{phone}, #{picturePath})
   </insert>
 
   <select id="findAll" resultType="user">
     select * from tb_user
   </select>
 
-  <select id="checkUser" resultType="user">
+
+  <resultMap id="checkUserMap" type="user">
+    <id column="id" property="id"/>
+    <result column="username" property="username"/>
+    <result column="password" property="password"/>
+    <result column="email" property="email"/>
+    <result column="address" property="address"/>
+    <result column="phone" property="phone"/>
+    <result column="account" property="account"/>
+    <result column="picture_path" property="picturePath"/>
+  </resultMap>
+  <select id="checkUser" resultMap="checkUserMap">
     select * from tb_user where username = #{username};
   </select>
 

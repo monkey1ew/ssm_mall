@@ -48,8 +48,10 @@ public class CartController {
         cart.setGoodsName(goods.getGoodsName());
         cart.setBusiness(goods.getBusiness());
 //        拿到nums判断是否是添加多个
-        Integer nums = Integer.parseInt((String) map.get("goodsNmb"));
-
+        Integer nums = 1;
+        if ((String) map.get("goodsNmb") != null) {
+            nums = Integer.parseInt((String) map.get("goodsNmb"));
+        }
         Cart item = cartService.getItem(cart.getCartName(), cart.getGoodsName(), null);
         Double price = goods.getGoodsPrice();
         if (item != null) { //购物车有这个商品 更新totalPrice 和 goodsNmb

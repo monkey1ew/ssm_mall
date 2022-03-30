@@ -1,5 +1,7 @@
 package com.fqh.bean;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,6 +14,8 @@ public class User implements Serializable {
     private String phone;
     private List<Orders> ordersList;
     private Double account;
+    private MultipartFile myFile; //头像
+    private String picturePath; //头像路径
 
     public User() {
     }
@@ -88,6 +92,22 @@ public class User implements Serializable {
 
     public void setAccount(Double account) {
         this.account = account;
+    }
+
+    public MultipartFile getMyFile() {
+        return myFile;
+    }
+
+    public void setMyFile(MultipartFile myFile) {
+        this.myFile = myFile;
+    }
+
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
     }
 
     @Override

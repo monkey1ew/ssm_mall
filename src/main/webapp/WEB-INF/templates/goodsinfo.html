@@ -110,29 +110,40 @@
             <p class="title">填写购买信息</p>
             <p class="close">×</p>
         </div>
-        <form id="formData" class="form-horizontal" method="post">
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="control-label col-lg-2">地址:</label>
-                    <div class="col-lg-9">
-                        <label>
-                            <input type="text" placeholder="地址" name="address" class="form-control" id="address">
-                        </label>
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="control-label col-lg-2">收件人电话:</label>
-                    <div class="col-lg-9">
-                        <label>
-                            <input type="text" placeholder="收件人电话" name="phone" class="form-control" id="phone">
-                        </label>
-                    </div>
+        <form class="layui-form" action="" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">收货人</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="收货人" class="layui-input">
                 </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">电话号码</label>
+                <div class="layui-input-block">
+                    <input type="tel" id="phone" name="phone" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？" placeholder="电话号码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">地址</label>
+                <div class="layui-input-block">
+                    <input type="text" id="address" name="address" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？" placeholder="地址信息" autocomplete="off" class="layui-input">
+                </div>
+            </div>
 
+            <div class="layui-form-item">
+                <label class="layui-form-label">支付方式</label>
+                <div class="layui-input-block">
+                    <select name="interest" lay-filter="aihao">
+                        <option value=""></option>
+                        <option value="0">微信</option>
+                        <option value="1" selected="">支付宝</option>
+                        <option value="2">积分</option>
+                        <option value="3">优惠券</option>
+                    </select>
+                </div>
             </div>
         </form>
-
         <div class="modal-footer">
             <button class="btn btn-success" onclick="payNow()">确定</button>
             <button class="close btn">关闭</button>
@@ -157,7 +168,7 @@
     </div>
 </div>
 <div class="search_bar clearfix">
-    <a href="#" class="logo fl"><img th:src="@{/static/img/鸡.png}" alt="..."></a>
+    <a href="#" class="logo fl"><img th:src="${session.userImgPath}" alt="..."></a>
     <div class="search_con fl">
         <input type="text" class="input_text fl" placeholder="搜索商品">
         <input type="button" class="input_btn fr" value="搜索">
@@ -243,7 +254,8 @@
         <td>
             <div class="comment-wrap">
                 <div class="photo">
-                    <div class="avatar" style="background-image: url('/static/img/bootstrap-solid.svg')"></div>
+                    <div class="avatar" style="background-image: url('/static/img/bootstrap-solid.svg')">
+                    </div>
                 </div>
                 <div class="comment-block">
                     <!--            评论内容-->
